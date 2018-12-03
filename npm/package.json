@@ -1,6 +1,6 @@
 {
   "name": "@atom-haskell/profiteur-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Profiteur built with GHCJS for Node",
   "bin": "profiteur.js",
   "main": "profiteur.js",

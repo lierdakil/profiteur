@@ -1,4 +1,4 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghcjsHEAD", doBenchmark ? false }:
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghcjs", doBenchmark ? false }:
 
 let
 
@@ -10,7 +10,7 @@ let
       }:
       mkDerivation {
         pname = "profiteur";
-        version = "0.4.4.0";
+        version = "0.4.5.0";
         src = ./.;
         configureFlags = [ "-fembed-data-files" ];
         isLibrary = false;
@@ -26,13 +26,14 @@ let
         license = stdenv.lib.licenses.bsd3;
       };
 
-  haskellPackages = if compiler == "default"
-                       then pkgs.haskellPackages
-                       else pkgs.haskell.packages.${compiler};
+  haskellPackages = pkgs.haskell.packages.${compiler}.override {
+    overrides = self: super: {
+        tasty-quickcheck = super.tasty-quickcheck.overrideAttrs (oldAttrs: rec {doCheck = false;});
+        scientific = super.scientific.overrideAttrs (oldAttrs: rec {doCheck = false;});
+    };
+  };
 
-  variant = if doBenchmark then pkgs.haskell.lib.doBenchmark else pkgs.lib.id;
-
-  drv = variant (haskellPackages.callPackage f {});
+  drv = haskellPackages.callPackage f {};
 
 in
 

@@ -69,6 +69,6 @@ Executable profiteur
     Hs-source-dirs: src/embed
     Build-depends:
       file-embed       >= 0.0.10 && < 0.0.11,
-      template-haskell >= 2.11   && < 2.12
+      template-haskell
   else
     Hs-source-dirs: src/noembed
